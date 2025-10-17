@@ -2,16 +2,28 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Courses - Student App</title>
+  <title>Courses</title>
+  <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-  <h2>Welcome to the Courses Page!</h2>
-  <ul>
-    <li>Web Development</li>
-    <li>Data Science</li>
-    <li>Machine Learning</li>
-    <li>Cloud Computing</li>
-  </ul>
+  <h2>Your Courses</h2>
+  <ul id="courses-list"></ul>
   <a href="login.html">Logout</a>
+
+  <script src="/js/script.js"></script>
+  <script>
+    const email = new URLSearchParams(window.location.search).get('email');
+    const list = document.getElementById('courses-list');
+
+    fetch('/student-courses/' + encodeURIComponent(email))
+      .then(res => res.json())
+      .then(courses => {
+        courses.forEach(course => {
+          const li = document.createElement('li');
+          li.textContent = `${course.courseName} - Teacher: ${course.teacher}`;
+          list.appendChild(li);
+        });
+      });
+  </script>
 </body>
 </html>
